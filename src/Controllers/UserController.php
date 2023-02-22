@@ -34,13 +34,15 @@ class UserController
         return UserService::save(user: (new UserModel(...$user)), company_ids: $company_ids);
     }
 
-    public function put(): array
+    public function put(?string $id = null): array
     {
         $user = (array) json_decode(file_get_contents('php://input', true));
+
+        $user['id'] = (int) $id;
         $company_ids = $user['company_ids'];
         unset($user['company_ids']);
         
-        return UserService::update(user: (new UserModel(...$user)));
+        return UserService::update(user: (new UserModel(...$user)), company_ids: $company_ids);
     }
 
     public function delete(string $id = null): bool

@@ -20,6 +20,7 @@ class QueryBuilder
         string $columns = "*",
     ): array
     {
+
         $query = "";
         $and = " and ";
         $terms_query = "";
@@ -120,11 +121,9 @@ class QueryBuilder
 
             $stmt->execute($params);
 
-            if($stmt->rowCount() > 0)
-                return true;
+            return true;
 
         } catch (Exception $exception) {
-            
             return $exception;
         }
     }
