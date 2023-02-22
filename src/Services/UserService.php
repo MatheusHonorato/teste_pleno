@@ -36,7 +36,6 @@ class UserService
         foreach ($company_ids as $company_id)
             (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->create(['user_id' => $new_user['id'], 'company_id' => $company_id]);
 
-
         PDOSingleton::getConnection()->commit();
 
         return [];

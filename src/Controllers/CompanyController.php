@@ -25,21 +25,24 @@ class CompanyController
 
     public function post()
     {
-        $data = (array) json_decode(file_get_contents('php://input', true));
-        $data['id'] = null;
+        $company = (array) json_decode(file_get_contents('php://input', true));
 
-        return CompanyService::save(user: (new CompanyModel(...$data)));
+        $company['id'] = null;
+        $user_ids = $company['user_ids'];
+        unset($company['user_ids']);
+
+        return CompanyService::save(company: (new CompanyModel(...$company)), user_ids: $user_ids);
     }
 
     public function put(): array
     {
         $data = (array) json_decode(file_get_contents('php://input', true));
         
-        return CompanyService::update(user: (new CompanyModel(...$data)));
+        return CompanyService::update(company: (new CompanyModel(...$data)));
     }
 
     public function delete(string $id = null): bool
     {    
-        return CompanyService::destroy(user_id: (int) $id);
+        return CompanyService::destroy(company_id: (int) $id);
     }
 }

@@ -7,6 +7,7 @@ namespace Matheus\TestePleno\Services;
 use Matheus\TestePleno\DB\PDOSingleton;
 use Matheus\TestePleno\DB\QueryBuilder;
 use Matheus\TestePleno\Models\CompanyModel;
+use Matheus\TestePleno\Models\UserCompanyModel;
 
 class CompanyService
 {
@@ -25,9 +26,18 @@ class CompanyService
         return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->fetch();
     }
 
-    public static function save(CompanyModel $company): array
+    public static function save(CompanyModel $company, array $user_ids): array
     {
-        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->create($company->toArray());
+        PDOSingleton::getConnection()->beginTransaction();
+
+        $new_company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->create($company->toArray());
+
+        foreach ($user_ids as $user_id)
+            (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->create(['user_id' => $user_id, 'company_id' => $new_company['id']]);
+
+        PDOSingleton::getConnection()->commit();
+
+        return [];
     }
 
     public static function update(CompanyModel $company): array
