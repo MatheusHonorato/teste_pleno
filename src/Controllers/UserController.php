@@ -17,13 +17,10 @@ class UserController
 
         $terms = (array) $_GET;
 
-        $offset = isset($terms['offset']) ? $terms['offset'] : 0;
-        $limit = isset($terms['limit']) ? $terms['limit'] : 10;
+        if(count($terms) > 0)
+            return UserService::finByParam(terms: $terms);
 
-        //if(count($terms) > 0)
-        return UserService::finByParam(terms: $terms, offset: (int) $offset, limit: (int) $limit);
-
-        //return UserService::getAll(offset: (int) $offset, limit: (int) $limit);
+        return UserService::getAll();
     }
 
     public function post()

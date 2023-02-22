@@ -15,14 +15,14 @@ class UserService
         return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->findById(id: $id);
     }
 
-    public static function finByParam(array $terms, int $offset = 0, int $limit = 0): array
+    public static function finByParam(array $terms): array
     {
-        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->find(terms: $terms, offset: $offset, limit: $limit);
+        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->find(terms: $terms);
     }
 
-    public static function getAll(int $offset = 0, int $limit = 10): array
+    public static function getAll(): array
     {
-        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->fetch(offset: $offset, limit: $limit);
+        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->fetch();
     }
 
     public static function save(UserModel $user): array
