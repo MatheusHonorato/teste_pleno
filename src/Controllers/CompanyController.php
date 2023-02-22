@@ -34,11 +34,15 @@ class CompanyController
         return CompanyService::save(company: (new CompanyModel(...$company)), user_ids: $user_ids);
     }
 
-    public function put(): array
+    public function put(?string $id = null): array
     {
-        $data = (array) json_decode(file_get_contents('php://input', true));
+        $company = (array) json_decode(file_get_contents('php://input', true));
+        $user['id'] = (int) $id;
+        $user_ids = $company['user_ids'];
+        unset($company['user_ids']);
+
         
-        return CompanyService::update(company: (new CompanyModel(...$data)));
+        return CompanyService::update(company: (new CompanyModel(...$company)), user_ids: $user_ids);
     }
 
     public function delete(string $id = null): bool

@@ -40,13 +40,29 @@ class CompanyService
         return [];
     }
 
-    public static function update(CompanyModel $company): array
+    public static function update(CompanyModel $company, array $user_ids): array
     {
-        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->update($company->toArray());
+        PDOSingleton::getConnection()->beginTransaction();
+
+        (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->update($company->toArray());
+
+        (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->delete("company_id = :company_id", ['company_id' => (string) $company->id]);
+
+        foreach ($user_ids as $user_id)
+            (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->create(['user_id' => $user_id, 'company_id' => $company->id]);
+
+        PDOSingleton::getConnection()->commit();
+
+        return [];
     }
 
     public static function destroy(int $company_id): bool
     {
-        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->delete("id = :id", ['id' => (string) $company_id]);
+        $user_company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->find(terms: ['company_id' => $company_id]);
+
+        if(count($user_company) == 0)
+            return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->delete("id = :id", ['id' => (string) $company_id]);
+        
+        return false;
     }
 }

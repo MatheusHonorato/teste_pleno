@@ -28,7 +28,6 @@ class UserService
 
     public static function save(UserModel $user, array $company_ids): array
     {
-
         PDOSingleton::getConnection()->beginTransaction();
 
         $new_user = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->create($user->toArray());
