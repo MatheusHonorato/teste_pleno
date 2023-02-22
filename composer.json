@@ -1,0 +1,23 @@
+{
+    "name": "matheus/teste_pleno",
+    "description": "Desafio Fullstack - Repositório API PHP",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Matheus\\TestePleno\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Matheus Honorato",
+            "email": "matheuspaixaohonorato@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5",
+        "guzzlehttp/guzzle": "^7.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    }
+}
