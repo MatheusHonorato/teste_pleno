@@ -25,17 +25,22 @@ class UserController
 
     public function post()
     {
-        $data = (array) json_decode(file_get_contents('php://input', true));
-        $data['id'] = null;
+        $user = (array) json_decode(file_get_contents('php://input', true));
 
-        return UserService::save(user: (new UserModel(...$data)));
+        $user['id'] = null;
+        $company_ids = $user['company_ids'];
+        unset($user['company_ids']);
+
+        return UserService::save(user: (new UserModel(...$user)), company_ids: $company_ids);
     }
 
     public function put(): array
     {
-        $data = (array) json_decode(file_get_contents('php://input', true));
+        $user = (array) json_decode(file_get_contents('php://input', true));
+        $company_ids = $user['company_ids'];
+        unset($user['company_ids']);
         
-        return UserService::update(user: (new UserModel(...$data)));
+        return UserService::update(user: (new UserModel(...$user)));
     }
 
     public function delete(string $id = null): bool

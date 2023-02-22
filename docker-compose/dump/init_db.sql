@@ -36,8 +36,52 @@ ALTER TABLE `users`
 ALTER TABLE `users`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
+CREATE TABLE IF NOT EXISTS `companies` (
+  `id` int NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `cnpj` varchar(200) NOT NULL,
+  `address` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `companies`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `cnpj` (`cnpj`);
+  
+ALTER TABLE `companies`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+CREATE TABLE IF NOT EXISTS `users_companies` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `company_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `users_companies`
+  ADD PRIMARY KEY (`id`),
+
+  ADD CONSTRAINT `fk_user_id`
+  FOREIGN KEY (`user_id`)
+  REFERENCES `users`(`id`),
+
+  ADD CONSTRAINT `fk_company_id`
+  FOREIGN KEY (`company_id`)
+  REFERENCES `companies`(`id`);
+
+
+ALTER TABLE `users_companies`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
 INSERT INTO `users` (`name`, `email`, `phone`, `date`, `city`) VALUES
-('joao', 'teste@email.com', '(38) 98855-7755', '2022-05-05', 'Montes Claros');
+('joao', 'joao@email.com', '(38) 98855-7755', '2022-05-05', 'Montes Claros');
+
+INSERT INTO `users` (`name`, `email`, `phone`, `date`, `city`) VALUES
+('maria', 'maria@email.com', '(38) 98855-7755', '2022-05-05', 'Sao Paulo');
+
+INSERT INTO `companies` (`name`, `cnpj`, `address`) VALUES
+('empresa a', '315116', 'Rua A, N 40');
+
+INSERT INTO `companies` (`name`, `cnpj`, `address`) VALUES
+('empresa b', '315117', 'Rua B, N 10');
 
 COMMIT;
 

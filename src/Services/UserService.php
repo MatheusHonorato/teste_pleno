@@ -6,6 +6,7 @@ namespace Matheus\TestePleno\Services;
 
 use Matheus\TestePleno\DB\PDOSingleton;
 use Matheus\TestePleno\DB\QueryBuilder;
+use Matheus\TestePleno\Models\UserCompanyModel;
 use Matheus\TestePleno\Models\UserModel;
 
 class UserService
@@ -25,9 +26,20 @@ class UserService
         return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->fetch();
     }
 
-    public static function save(UserModel $user): array
+    public static function save(UserModel $user, array $company_ids): array
     {
-        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->create($user->toArray());
+
+        PDOSingleton::getConnection()->beginTransaction();
+
+        $new_user = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->create($user->toArray());
+
+        foreach ($company_ids as $company_id)
+            (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->create(['user_id' => $new_user['id'], 'company_id' => $company_id]);
+
+
+        PDOSingleton::getConnection()->commit();
+
+        return [];
     }
 
     public static function update(UserModel $user): array

@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Matheus\TestePleno\Models;
 
-class UserModel
+class CompanyModel
 {
-    public const TABLE = 'users';
+    public const TABLE = 'companies';
 
     public function __construct(
         private int|null $id,
         private string $name,
-        private string $email,
-        private string $phone,
-        private string $date,
-        private string $city,
+        private string $cnpj,
+        private string $address,
     ) {}
 
     public function toArray(): array
@@ -22,10 +20,8 @@ class UserModel
         return [
           'id' => $this->id,
           'name' => $this->name,
-          'email' => $this->email,
-          'phone' => $this->phone,
-          'date' => $this->date,
-          'city' => $this->city
+          'cnpj' => $this->cnpj,
+          'address' => $this->address
         ];
     }
 

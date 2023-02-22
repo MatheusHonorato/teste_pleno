@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Matheus\TestePleno\DB;
 
 use Exception;
-use PDO;
 
 class QueryBuilder
 {
