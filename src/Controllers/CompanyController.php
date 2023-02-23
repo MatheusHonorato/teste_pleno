@@ -11,7 +11,6 @@ class CompanyController
 {
     public function get(?string $id = null): array
     {
-
         if($id)
             return CompanyService::findById(id: (int) $id);
 

@@ -6,6 +6,7 @@ namespace Matheus\TestePleno\Services;
 
 use Matheus\TestePleno\DB\PDOSingleton;
 use Matheus\TestePleno\DB\QueryBuilder;
+use Matheus\TestePleno\Models\CompanyModel;
 use Matheus\TestePleno\Models\UserCompanyModel;
 use Matheus\TestePleno\Models\UserModel;
 
@@ -18,6 +19,29 @@ class UserService
 
     public static function finByParam(array $terms): array
     {
+        if(isset($terms['company'])) {
+            $company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['name' => $terms['company']]);
+
+            $user_company = null;
+
+            if(count(array_column($company, 'id')) > 0)
+                foreach ($company as $value) {
+                    $user_company_loop = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->find(terms: ['company_id' => $value['id']]);
+
+                    foreach ($user_company_loop as $value)
+                        $user_company[] = $value;
+                }
+            else
+                $user_company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->find(terms: ['company_id' => $company['id']]);
+
+            if(count($user_company) == 0)
+                return [];
+
+            (count(array_column($user_company, 'user_id')) > 0) ? $user_id = array_column($user_company, 'user_id') : $user_id = $user_company['user_id'];
+
+            return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->find(terms: ['id' => $user_id]);
+        }
+
         return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->find(terms: $terms);
     }
 

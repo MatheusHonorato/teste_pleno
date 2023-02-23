@@ -8,6 +8,8 @@ use Exception;
 
 class QueryBuilder
 {
+    const FIRST = 0;
+
     public function __construct(
         private readonly object $connection,
         private readonly string $table,
@@ -29,8 +31,17 @@ class QueryBuilder
         if($params == null) {
             $params = $terms;
             foreach ($params as $key => $value) {
+
                 (($index) >= count($params)) ? $and = '' : false;
-                $terms_query = $terms_query . "{$key} = :{$key}{$and} ";
+
+                if(is_array($value))
+                {
+                    $terms[$key] = implode(", ", $value);
+                    $terms_query = $terms_query . "{$key} IN ({$terms[$key]}){$and} ";
+                    unset($terms[$key]);
+                }
+                else
+                    $terms_query = $terms_query . "{$key} = :{$key}{$and} ";
 
                 $index++;
             }
@@ -40,7 +51,7 @@ class QueryBuilder
 
         $stmt = $this->connection->prepare($query);
 
-        $stmt->execute($params);
+        $stmt->execute($terms);
 
         if($stmt->rowCount() === 1)
             return $stmt->fetch($this->connection::FETCH_ASSOC);

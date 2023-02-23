@@ -11,7 +11,6 @@ class UserController
 {
     public function get(?string $id = null): array
     {
-
         if($id)
             return UserService::findById(id: (int) $id);
 
