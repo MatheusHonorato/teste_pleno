@@ -22,6 +22,9 @@ class UserService
         if(isset($terms['company'])) {
             $company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['name' => $terms['company']]);
 
+            if(count($company) == 0)
+                return [];
+
             $user_company = null;
 
             if(count(array_column($company, 'id')) > 0)
@@ -47,7 +50,23 @@ class UserService
 
     public static function getAll(): array
     {
-        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->fetch();
+        $users = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->fetch();
+
+        foreach ($users as $key => $user) {
+            $user_company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->find(terms: ['user_id' => $user['id']]);
+
+            $users[$key]['companies'] = [];
+
+            foreach ($user_company as $value) {
+
+                if(isset($value['company_id'])) {
+                    $company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['id' => $value['company_id']]);
+                    $users[$key]['companies'][] = $company;
+                }
+            }
+        }
+
+        return $users;
     }
 
     public static function save(UserModel $user, array $company_ids): array
