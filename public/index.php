@@ -32,16 +32,17 @@ if($_SERVER["REQUEST_URI"]) {
     $method = strtolower($_SERVER['REQUEST_METHOD']);
 
     try {
+
         $response = call_user_func_array(array(new $controller, $method), $url);
 
         http_response_code(200);
 
         echo json_encode(array('status' => 'success', 'data' => $response), JSON_UNESCAPED_UNICODE);
         die;
-    } catch (\Exception $exception) {
+    } catch (\Throwable $exception) {
         http_response_code(404);
 
-        echo json_encode(array('status' => 'error', 'data' => $exception->getMessage()), JSON_UNESCAPED_UNICODE);
+        echo json_encode(array('status' => 'error', 'data' => 'route not found'), JSON_UNESCAPED_UNICODE);
         exit;
     }
 }

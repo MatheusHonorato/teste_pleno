@@ -14,7 +14,17 @@ class UserService
 {
     public static function findById(int $id): array
     {
-        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->findById(id: $id);
+        $user = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->findById(id: $id);
+
+        $user_company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->find(terms: ['user_id' => $user['id']]);
+
+        $user['companies'] = [];
+
+        foreach ($user_company as $value)
+            if(isset($value['company_id']))
+                $user['companies'][] = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['id' => $value['company_id']]);
+
+        return $user;
     }
 
     public static function finByParam(array $terms): array
@@ -57,13 +67,9 @@ class UserService
 
             $users[$key]['companies'] = [];
 
-            foreach ($user_company as $value) {
-
-                if(isset($value['company_id'])) {
-                    $company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['id' => $value['company_id']]);
-                    $users[$key]['companies'][] = $company;
-                }
-            }
+            foreach ($user_company as $value)
+                if(isset($value['company_id']))
+                    $users[$key]['companies'][] = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['id' => $value['company_id']]);
         }
 
         return $users;
