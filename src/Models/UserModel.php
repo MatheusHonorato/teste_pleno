@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Matheus\TestePleno\Models;
 
-use Matheus\TestePleno\Util\Validator;
-
 class UserModel
 {
     public const TABLE = 'users';
 
     public function __construct(
-        private int|null $id,
-        private string $name,
-        private string $email,
-        private string $phone,
-        private string $date,
-        private string $city,
+        private ?int $id = null,
+        private ?string $name = null,
+        private ?string $email = null,
+        private ?string $phone = null,
+        private ?string $date = null,
+        private ?string $city = null,
+        private ?array $company_ids = [],
     ) {}
 
     public function toArray(): array
@@ -27,11 +26,11 @@ class UserModel
           'email' => $this->email,
           'phone' => $this->phone,
           'date' => $this->date,
-          'city' => $this->city
+          'city' => $this->city,
         ];
     }
 
-    public function __get($atrib): int|string
+    public function __get($atrib): string|int|array|null
     {
         return $this->$atrib;
     }

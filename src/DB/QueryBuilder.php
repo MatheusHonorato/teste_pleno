@@ -87,11 +87,11 @@ class QueryBuilder
 
     public function create(array $data): array|bool
     {
-        try {
-  
+        try {  
           $columns = implode(", ", array_keys($data));
           $values = ":" . implode(", :", array_keys($data));
           $stmt = $this->connection->prepare("INSERT INTO {$this->table} ({$columns}) VALUES ({$values})");
+
           $stmt->execute($data);
 
           return $this->findById((int) $this->connection->lastInsertId());

@@ -28,23 +28,27 @@ class UserController
 
     public function post()
     {
-        $user = (array) json_decode(file_get_contents('php://input', true));
+        $request_user = (array) json_decode(file_get_contents('php://input', true));
+
+        $user =  new UserModel(...$request_user);
 
         $validator = new Validator();
-        $validator->validateRequired($user['name'] ?? null, 'name');
-        $validator->validateRequired($user['email'] ?? null, 'e-mail');
-        $validator->validateRequired($user['company_ids'] ?? null, 'company_ids');
+        $validator->validateRequired($user->name, 'name');
+        $validator->validateRequired($user->email, 'e-mail');
+        $validator->validateEmail($user->email, 'e-mail');
+        $validator->validateUniqueFind('user', $user->email, 'email');
+        $validator->validateDate($user->date, 'date');
+        $validator->validateRequired($user->company_ids, 'company_ids');
+
+        foreach ($user->company_ids as $value)
+            $validator->validateUniqueFindNot('company', $value, 'id');
 
         $errors = $validator->getErrors();
         
         if(count($errors) > 0)
             return $errors;
 
-        $user['id'] = null;
-        $company_ids = $user['company_ids'];
-        unset($user['company_ids']);
-
-        return UserService::save(user: (new UserModel(...$user)), company_ids: $company_ids);
+        return UserService::save(user: $user, company_ids: $user->company_ids);
     }
 
     public function put(?string $id = null): array
@@ -54,7 +58,9 @@ class UserController
         $validator = new Validator();
         $validator->validateRequired($id ?? null, 'id');
         $validator->validateRequired($user['name'] ?? null, 'name');
-        $validator->validateRequired($user['email'] ?? null, 'e-mail');
+        $validator->validateRequired($user['email'] ?? null, 'email');
+        $validator->validateEmail($user['email'] ?? null, 'email');
+        $validator->validateUniqueFind('user', $user['email'], 'email');
         $validator->validateRequired($user['company_ids'] ?? null, 'company_ids');
 
         $errors = $validator->getErrors();
