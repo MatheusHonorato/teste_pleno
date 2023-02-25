@@ -16,6 +16,9 @@ class UserService
     {
         $user = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->findById(id: $id);
 
+        if(count($user) == 0)
+            return [];
+
         $user_company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->find(terms: ['user_id' => $user['id']]);
 
         $user['companies'] = [];
@@ -23,10 +26,9 @@ class UserService
         if(isset($user_company['id']) && isset($user_company['company_id']))
             $user['companies'][] = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['id' => $user_company['company_id']]);
         else
-            foreach ($user_company as $value) {
+            foreach ($user_company as $value)
                 if(isset($value['company_id']))
                     $user['companies'][] = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['id' => $value['company_id']]);
-            }
            
         return $user;
     }
@@ -58,10 +60,16 @@ class UserService
             
             $users = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->find(terms: ['id' => $user_id]);
             
+            if(isset($users['id']))
+                $users = [0 => $users];
+
             foreach ($users as $key => $user) {
                 $user_company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->find(terms: ['user_id' => $user['id']]);
     
                 $users[$key]['companies'] = [];
+
+                if(isset($user_company['id']))
+                    $user_company = [0 => $user_company];
     
                 foreach ($user_company as $value)
                     if(isset($value['company_id']))
@@ -73,15 +81,22 @@ class UserService
 
         $users = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->find(terms: $terms);
 
+        if(isset($users['id']))
+            $users = [0 => $users];
+
         foreach ($users as $key => $user) {
             if(isset($user['id']))  {
                 $user_company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->find(terms: ['user_id' => $user['id']]);
 
                 $users[$key]['companies'] = [];
     
+                if(isset($user_company['id']))
+                    $user_company = [0 => $user_company];
+
                 foreach ($user_company as $value)
                     if(isset($value['company_id']))
                         $users[$key]['companies'][] = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['id' => $value['company_id']]);
+                    
             }
            
         }
@@ -97,6 +112,9 @@ class UserService
             $user_company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->find(terms: ['user_id' => $user['id']]);
 
             $users[$key]['companies'] = [];
+
+            if(isset($user_company['id']))
+                $user_company = [0 => $user_company];
 
             foreach ($user_company as $value)
                 if(isset($value['company_id']))

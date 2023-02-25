@@ -11,6 +11,9 @@ class UserController
 {
     public function get(?string $id = null): array
     {
+        if(!is_numeric($id) && $id != null)
+            return [];
+
         if($id)
             return UserService::findById(id: (int) $id);
 

@@ -49,6 +49,7 @@ class QueryBuilder
         
         $query = "SELECT {$columns} FROM {$this->table} WHERE {$terms_query}";
 
+
         $stmt = $this->connection->prepare($query);
 
         $stmt->execute($terms);

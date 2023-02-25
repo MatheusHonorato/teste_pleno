@@ -5,7 +5,7 @@ declare(strict_types=1);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
-header("Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS");
+header("Access-Control-Allow-Methods: HEAD, GET, PUT, PATCH, POST, DELETE, OPTIONS");
 
 require_once '../vendor/autoload.php';
 
@@ -39,10 +39,10 @@ if($_SERVER["REQUEST_URI"]) {
 
         echo json_encode(array('status' => 'success', 'data' => $response), JSON_UNESCAPED_UNICODE);
         die;
-    } catch (\Throwable $exception) {
+    } catch (\Exception $exception) {
         http_response_code(404);
 
         echo json_encode(array('status' => 'error', 'data' => 'route not found'), JSON_UNESCAPED_UNICODE);
-        exit;
+        die;
     }
 }
