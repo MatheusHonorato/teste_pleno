@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Matheus\TestePleno\Models;
 
+use Matheus\TestePleno\Util\Validator;
+
 class UserModel
 {
     public const TABLE = 'users';

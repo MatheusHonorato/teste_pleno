@@ -6,6 +6,7 @@ namespace Matheus\TestePleno\Controllers;
 
 use Matheus\TestePleno\Models\UserModel;
 use Matheus\TestePleno\Services\UserService;
+use Matheus\TestePleno\Util\Validator;
 
 class UserController
 {
@@ -29,6 +30,16 @@ class UserController
     {
         $user = (array) json_decode(file_get_contents('php://input', true));
 
+        $validator = new Validator();
+        $validator->validateRequired($user['name'] ?? null, 'name');
+        $validator->validateRequired($user['email'] ?? null, 'e-mail');
+        $validator->validateRequired($user['company_ids'] ?? null, 'company_ids');
+
+        $errors = $validator->getErrors();
+        
+        if(count($errors) > 0)
+            return $errors;
+
         $user['id'] = null;
         $company_ids = $user['company_ids'];
         unset($user['company_ids']);
@@ -39,6 +50,17 @@ class UserController
     public function put(?string $id = null): array
     {
         $user = (array) json_decode(file_get_contents('php://input', true));
+
+        $validator = new Validator();
+        $validator->validateRequired($id ?? null, 'id');
+        $validator->validateRequired($user['name'] ?? null, 'name');
+        $validator->validateRequired($user['email'] ?? null, 'e-mail');
+        $validator->validateRequired($user['company_ids'] ?? null, 'company_ids');
+
+        $errors = $validator->getErrors();
+        
+        if(count($errors) > 0)
+            return $errors;
 
         $user['id'] = (int) $id;
         $company_ids = $user['company_ids'];

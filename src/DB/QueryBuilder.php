@@ -85,9 +85,9 @@ class QueryBuilder
         return [];
     }
 
-    public function create(array $data): array
+    public function create(array $data): array|bool
     {
-      try {
+        try {
   
           $columns = implode(", ", array_keys($data));
           $values = ":" . implode(", :", array_keys($data));
@@ -95,12 +95,12 @@ class QueryBuilder
           $stmt->execute($data);
 
           return $this->findById((int) $this->connection->lastInsertId());
-      } catch (\PDOException $exception) {
-          return $exception;
-      }
+        } catch (\PDOException) {
+            return false;
+        }
     }
 
-    public function update(array $data): array
+    public function update(array $data): array|bool
     {
         try {
             $columns = "";
@@ -118,9 +118,9 @@ class QueryBuilder
             $stmt->execute($data);
 
             return $this->findById((int) $data['id']);
-        } catch (\PDOException $exception) {
+        } catch (\PDOException) {
 
-            return $exception;
+            return false;
         }
     }
 
