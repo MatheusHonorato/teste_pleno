@@ -66,6 +66,8 @@ class UserController
         $request_user = (array) json_decode(file_get_contents('php://input', true));
         $request_user['id'] = (int) $id;
 
+        $user = null;
+
         try {
             $user =  new UserModel(...$request_user);
         } catch (\Throwable) {

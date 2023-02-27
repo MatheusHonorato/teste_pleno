@@ -58,13 +58,33 @@ class CompanyController
 
     public function put(?string $id = null): array
     {
-        $company = (array) json_decode(file_get_contents('php://input', true));
-        $user['id'] = (int) $id;
-        $user_ids = $company['user_ids'];
-        unset($company['user_ids']);
+        $request_company = (array) json_decode(file_get_contents('php://input', true));
+        $request_company['id'] = (int) $id;
 
+        $company = null;
+
+        try {
+            $company =  new CompanyModel(...$request_company);
+        } catch (\Throwable) {
+            return ["error input types"];
+        }
         
-        return CompanyService::update(company: (new CompanyModel(...$company)), user_ids: $user_ids);
+        $validator = new Validator();
+        $validator->validateRequired($company->name, 'name');
+        $validator->validateRequired($company->cnpj, 'cnpj');
+        $validator->validateUniqueFind('company', $company->cnpj, 'cnpj');
+        $validator->validateRequired($company->address, 'address');
+
+        $validator->validateRequired($company->user_ids, 'user_ids');
+        foreach ($company->user_ids as $value)
+            $validator->validateUniqueFindNot('user', $value, 'id');
+
+        $errors = $validator->getErrors();
+        
+        if(count($errors) > 0)
+            return $errors;
+
+        return CompanyService::update(company: $company, user_ids: $company->user_ids);
     }
 
     public function delete(string $id = null): bool
