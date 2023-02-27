@@ -45,6 +45,20 @@ class Validator
             $this->addError("{$fieldName} is not a valid date");
     }
 
+    public function validateInt($value, $fieldName): void
+    {
+        if (!filter_var($value, FILTER_VALIDATE_INT) !== false)
+            $this->addError("{$fieldName} is not ineger type");
+
+    }
+
+    public function validateString($value, $fieldName): void
+    {
+        if (!is_string($value))
+            $this->addError("{$fieldName} is not string type");
+
+    }
+
     private function addError(string $error): void
     {
         $this->errors[] = $error;

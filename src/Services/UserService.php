@@ -23,12 +23,14 @@ class UserService
 
         $user['companies'] = [];
 
-        if(isset($user_company['id']) && isset($user_company['company_id']))
+        if(isset($user_company['id']) && isset($user_company['company_id'])) {
             $user['companies'][] = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['id' => $user_company['company_id']]);
-        else
-            foreach ($user_company as $value)
-                if(isset($value['company_id']))
-                    $user['companies'][] = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['id' => $value['company_id']]);
+            return $user;
+        }
+        
+        foreach ($user_company as $value)
+            if(isset($value['company_id']))
+                $user['companies'][] = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: CompanyModel::TABLE))->find(terms: ['id' => $value['company_id']]);
            
         return $user;
     }
@@ -128,7 +130,7 @@ class UserService
     {
 
         PDOSingleton::getConnection()->beginTransaction();
-
+        
         $new_user = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->create($user->toArray());
 
         foreach ($company_ids as $company_id)
@@ -136,7 +138,7 @@ class UserService
 
         PDOSingleton::getConnection()->commit();
 
-        return [];
+        return self::findById($new_user['id']);
     }
 
     public static function update(UserModel $user, array $company_ids): array
@@ -157,10 +159,9 @@ class UserService
 
     public static function destroy(int $user_id): bool
     {
-        $user_company = (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->find(terms: ['user_id' => $user_id]);
+        (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->delete("user_id = :user_id", ['user_id' => $user_id]);
 
-        if(count($user_company) == 0)
-            return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->delete("id = :id", ['id' => (string) $user_id]);
+        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->delete("id = :id", ['id' => (string) $user_id]);
         
         return false;
     }
