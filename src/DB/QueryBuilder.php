@@ -24,8 +24,9 @@ class QueryBuilder
     {
 
         $query = "";
-        $and = " and ";
+        $and = " or ";
         $terms_query = "";
+        $flag_like = false;
 
         $index = 1;
         if($params == null) {
@@ -34,14 +35,20 @@ class QueryBuilder
 
                 (($index) >= count($params)) ? $and = '' : false;
 
+                (($index) >= count($params)) ? $or = '' : false;
+
                 if(is_array($value))
                 {
                     $terms[$key] = implode(", ", $value);
                     $terms_query = $terms_query . "{$key} IN ({$terms[$key]}){$and} ";
                     unset($terms[$key]);
                 }
-                else
+                else if (strpos($key, 'id') !== false) {
                     $terms_query = $terms_query . "{$key} = :{$key}{$and} ";
+                } else {
+                    $terms_query = $terms_query . "{$key} LIKE '%{$value}%{$or}' ";
+                    $flag_like = true;
+                }
 
                 $index++;
             }
@@ -49,11 +56,23 @@ class QueryBuilder
         
         $query = "SELECT {$columns} FROM {$this->table} WHERE {$terms_query}";
 
-
         $stmt = $this->connection->prepare($query);
 
-        $stmt->execute($terms);
+        if($flag_like) {
+            try {
+                $stmt->execute();
+            } catch (\Throwable) {
+            }    
+        }
 
+        if(!$flag_like) {
+            try {
+                $stmt->execute($terms);
+            } catch (\Throwable) {
+            }    
+        }
+
+        
         if($stmt->rowCount() === 1)
             return $stmt->fetch($this->connection::FETCH_ASSOC);
         
