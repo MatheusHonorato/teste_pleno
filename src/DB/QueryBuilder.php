@@ -71,7 +71,6 @@ class QueryBuilder
             } catch (\Throwable) {
             }    
         }
-
         
         if($stmt->rowCount() === 1)
             return $stmt->fetch($this->connection::FETCH_ASSOC);

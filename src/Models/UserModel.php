@@ -30,7 +30,7 @@ class UserModel
         ];
     }
 
-    public function __get($atrib): string|int|array|null
+    public function __get($atrib): mixed
     {
         return $this->$atrib;
     }

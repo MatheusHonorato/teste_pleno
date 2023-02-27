@@ -9,10 +9,11 @@ class CompanyModel
     public const TABLE = 'companies';
 
     public function __construct(
-        private int|null $id,
-        private string $name,
-        private string $cnpj,
-        private string $address,
+        private ?int $id = null,
+        private ?string $name = null,
+        private ?string $cnpj = null,
+        private ?string $address = null,
+        private ?array $user_ids = [],
     ) {}
 
     public function toArray(): array
@@ -25,7 +26,7 @@ class CompanyModel
         ];
     }
 
-    public function __get($atrib): int|string
+    public function __get($atrib): mixed
     {
         return $this->$atrib;
     }
