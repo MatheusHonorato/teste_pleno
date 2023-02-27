@@ -159,10 +159,14 @@ class UserService
 
     public static function destroy(int $user_id): bool
     {
+        PDOSingleton::getConnection()->beginTransaction();
+
         (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserCompanyModel::TABLE))->delete("user_id = :user_id", ['user_id' => $user_id]);
 
-        return (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->delete("id = :id", ['id' => (string) $user_id]);
+        (new QueryBuilder(connection: PDOSingleton::getConnection(), table: UserModel::TABLE))->delete("id = :id", ['id' => (string) $user_id]);
         
-        return false;
+        PDOSingleton::getConnection()->commit();
+    
+        return true;
     }
 }
