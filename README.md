@@ -105,10 +105,10 @@ Após efetuar o download do projeto é necessário executar os seguintes passos:
 para resolver de forma rapida e conseguir testar a aplicação altere as portas utilizadas pelos containers no arquivo docker-compose.yml, rode 'docker-compose down' e inicie o processo novamente.
 - A API pode ser testada de maneira isolada em softwares como o insomnia ou postman
 
-Rotas API:
+# Rotas API:
 
 
-#### Companies
+## Companies
 
 CompanyFind
 
@@ -164,7 +164,7 @@ CompanyDelete
 
     Endeeço: http://localhost:8000/company/1
 
-#### Users
+## Users
 
 UserFind
 
