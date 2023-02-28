@@ -10,7 +10,7 @@ use Matheus\TestePleno\Util\ClearString;
 
 class ClearStringTest extends TestCase {
 
-  public function testClearBarStringCheck() {
+  public function testClearBarStringCheck(): void {
     $expected = "";
     $atual = "/\\";
     $this->assertEquals($expected, ClearString::execute($atual)); 

@@ -71,8 +71,9 @@ class CompanyController
         
         $validator = new Validator();
         $validator->validateRequired($company->name, 'name');
+
         $validator->validateRequired($company->cnpj, 'cnpj');
-        $validator->validateUniqueFind('company', $company->cnpj, 'cnpj');
+
         $validator->validateRequired($company->address, 'address');
 
         $validator->validateRequired($company->user_ids, 'user_ids');
