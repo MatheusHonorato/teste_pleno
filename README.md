@@ -105,6 +105,10 @@ Após efetuar o download do projeto é necessário executar os seguintes passos:
 para resolver de forma rapida e conseguir testar a aplicação altere as portas utilizadas pelos containers no arquivo docker-compose.yml, rode 'docker-compose down' e inicie o processo novamente.
 - A API pode ser testada de maneira isolada em softwares como o insomnia ou postman
 
+Rotas API:
+
+
+
 ## Um pouco sobre a aplicação (API)
 
 Stack utilizada:
@@ -125,7 +129,7 @@ Pacotes:
 
 Descrição
 
-A aplicação foi desenvolvida utilizando orientação a objetos e arquitetura model, controller. Além dos models e controllers para um maior desacoplamento da aplicação foi aplicado o padrão singleton na conexão com o banco de dados para garantir que não sejam abertas varias conexões desnecessarias com o banco.
+A aplicação foi desenvolvida utilizando php orientado a objetos com tipagem forte e arquitetura model, controller. Além dos models e controllers para um maior desacoplamento da aplicação foi aplicado o padrão singleton na conexão com o banco de dados para garantir que não sejam abertas varias conexões desnecessarias com o banco.
 Uma versão simplificada do padrão querybuilder foi utilizada para abstrair as querys do banco de dados e services foram criados para que os controllers não ficassem inchados com regras de negócio. O sistema de roteamento da api é feito carregando os controladores a partir dos endereços das rotas com o respectivo método http ex: rota 'users' utilizando o método http 'get' carrega o  método de nome 'get' no controlador 'UserController'.
 
 ## Pricipais dificuldades e duvidas
