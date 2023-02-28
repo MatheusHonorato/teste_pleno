@@ -137,7 +137,7 @@ CompanyCreate
     JSON:
 
     {
-        "name": "Empresa teste updaterrr",
+        "name": "Empresa teste",
         "cnpj": "12345600001",
         "address": "Rua exemplo",
         "user_ids": [1]
@@ -152,7 +152,7 @@ CompanyUpdate
     JSON:
 
     {
-        "name": "Empresa teste updaterrr",
+        "name": "Empresa teste update",
         "cnpj": "12345600001",
         "address": "Rua exemplo",
         "user_ids": [1]
@@ -193,8 +193,8 @@ UserCreate
     JSON:
 
     {
-        "name": "testek",
-        "email": "testek@testekt.com",
+        "name": "teste",
+        "email": "teste@teste.com",
         "date": "2020-05-05",
         "city": "moc",
         "phone": "3222222",
@@ -210,8 +210,8 @@ UserUpdate
     JSON:
 
     {
-        "name": "testek",
-        "email": "testek@testekt.com",
+        "name": "teste update",
+        "email": "teste@teste.com",
         "date": "2020-05-05",
         "city": "moc",
         "phone": "3222222",
@@ -245,18 +245,20 @@ Pacotes:
 
 Descrição
 
-A aplicação foi desenvolvida utilizando php orientado a objetos com tipagem forte e arquitetura model, controller. Além dos models e controllers para um maior desacoplamento da aplicação foi aplicado o padrão singleton na conexão com o banco de dados para garantir que não sejam abertas varias conexões desnecessarias com o banco.
-Uma versão simplificada do padrão querybuilder foi utilizada para abstrair as querys do banco de dados e services foram criados para que os controllers não ficassem inchados com regras de negócio. O sistema de roteamento da api é feito carregando os controladores a partir dos endereços das rotas com o respectivo método http ex: rota 'users' utilizando o método http 'get' carrega o  método de nome 'get' no controlador 'UserController'.
+A aplicação foi desenvolvida utilizando php orientado a objetos com tipagem forte e arquitetura model, controller. Além dos models e controllers, para um maior desacoplamento da aplicação foi aplicado o padrão singleton na conexão com o banco de dados, garantindo que não sejam abertas varias conexões desnecessarias com o mysql.
 
-## Pricipais dificuldades e duvidas
+Uma versão simplificada do padrão querybuilder foi utilizada para abstrair as querys do banco de dados. Services foram criados para que os controllers não ficassem inchados com regras de negócio. O sistema de roteamento da api é feito carregando os controladores a partir dos endereços das rotas com o respectivo método http 
+ex: rota 'users' utilizando o método http 'get' carrega o  método de nome 'get' no controlador 'UserController'.
 
-A principal dificuldade durante o processo de desenvolvimento foi trabalhar com uma abstração para o banco de dados. No desenvolvimento da aplicação tive a ideia de utilizar o query buildar para abstrair as consultas do banco e deixar o software mais desacoplado, o que acabou levando um bom tempo de desenvolvimento
-e na minha opinião um certo overenginner.
-ALém disso o escopo bem aberto das possibilidades no back-end geraram duvidas em relação ao que a empresa espera do teste.
+## Pricipais dificuldades e dúvidas
+
+A principal dificuldade durante o processo de desenvolvimento foi trabalhar com uma abstração para o banco de dados. No desenvolvimento da aplicação tive a ideia de utilizar o query builder para abstrair as consultas do banco e deixar o software mais desacoplado, o que acabou levando um bom tempo de desenvolvimento
+e na minha opinião um certo overengineering.
+ALém disso o escopo bem aberto das possibilidades no back-end geraram dúvidas em relação ao que a empresa espera do teste.
 
 ## Melhorias propostas
 
-- Melhora da implementação do query builder possibilitando trabalhar também com joins e assim não ter a necessidade de fazer varias consultas no service.
-- Implementação de paginação
-- Implementação de interfaces principalmente nas classes relacionadas ao banco de dados para garantir o principio inversão de dependencias do SOLID onde aprendemos que é melhor depender de interfaces do que de implementações.
-- Fiquei na duvida sobre a utilização de pacotes no backend. Uma boa melhoria seria a utilização de pacotes consolidados para algumas tarefas como um sistema de rotas robusto.
+- Melhora da implementação do query builder possibilitando trabalhar também com joins e assim não ter a necessidade de fazer várias consultas no service;
+- Implementação de paginação;
+- Implementação de interfaces principalmente nas classes relacionadas ao banco de dados para garantir o principio inversão de dependências do SOLID onde aprendemos que é melhor depender de interfaces do que de implementações;
+- Fiquei na dúvida sobre a utilização de pacotes no backend. Uma boa melhoria seria a utilização de pacotes consolidados para algumas tarefas como um sistema de rotas robusto.
