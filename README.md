@@ -100,13 +100,129 @@ Após efetuar o download do projeto é necessário executar os seguintes passos:
 - copie o arquivo '.env-example' e renomeie para '.env'
 - Após o build rode o comando: 'docker-compose up -d' para subir os containers, rodar a aplicação e o script build para criar as tabelas no banco e inserir dados default.
 - Acesse o bash do container php com o comando 'docker exec -ti app bash' e rode o comando 'composer install' para instalar as dependencias do projeto.
-- Aguarde alguns segundos e acesse e servidor da aplicação que estará disponível em: 'http://localhost:8000'
+- Aguarde alguns segundos e acesse o servidor da aplicação que estará disponível em: 'http://localhost:8000'
 - Se ocorrer algum erro rode 'docker-compose ps' e verifique a coluna 'State' de cada container, se alguma não estiver como 'Up' provavelmente alguma porta já está sendo utilizada no sistema,
 para resolver de forma rapida e conseguir testar a aplicação altere as portas utilizadas pelos containers no arquivo docker-compose.yml, rode 'docker-compose down' e inicie o processo novamente.
 - A API pode ser testada de maneira isolada em softwares como o insomnia ou postman
 
 Rotas API:
 
+
+#### Companies
+
+CompanyFind
+
+    Método: GET
+
+    Endereço: http://localhost:8000/company/1
+
+CompanyList
+
+    Método: GET
+
+    Endereço: http://localhost:8000/company
+
+CompanySearch
+
+    Método: GET
+
+    Endereço: http://localhost:8000/company?name=empresa
+
+CompanyCreate
+
+    Método: POST
+
+    Endereço: http://localhost:8000/company
+
+    JSON:
+
+    {
+        "name": "Empresa teste updaterrr",
+        "cnpj": "12345600001",
+        "address": "Rua exemplo",
+        "user_ids": [1]
+    }
+
+CompanyUpdate
+
+    Método: PUT
+
+    Endereço: http://localhost:8000/company/1
+
+    JSON:
+
+    {
+        "name": "Empresa teste updaterrr",
+        "cnpj": "12345600001",
+        "address": "Rua exemplo",
+        "user_ids": [1]
+    }
+
+CompanyDelete
+
+    Método: DELETE
+
+    Endeeço: http://localhost:8000/company/1
+
+#### Users
+
+UserFind
+
+    Método: GET
+
+    Endereço: http://localhost:8000/user/1
+
+UserList
+
+    Método: GET
+
+    Endereço: http://localhost:8000/user
+
+UserSearch
+
+    Método: GET
+
+    Endereço: http://localhost:8000/user?name=empresa
+
+UserCreate
+
+    Método: POST
+
+    Endereço: http://localhost:8000/user
+
+    JSON:
+
+    {
+        "name": "testek",
+        "email": "testek@testekt.com",
+        "date": "2020-05-05",
+        "city": "moc",
+        "phone": "3222222",
+        "company_ids": [1]
+    }
+
+UserUpdate
+
+    Método: PUT
+
+    Endereço: http://localhost:8000/user/1
+
+    JSON:
+
+    {
+        "name": "testek",
+        "email": "testek@testekt.com",
+        "date": "2020-05-05",
+        "city": "moc",
+        "phone": "3222222",
+        "company_ids": [1]
+    }
+
+UserDelete
+
+    Método: DELETE
+
+    Endeeço: http://localhost:8000/user/1
 
 
 ## Um pouco sobre a aplicação (API)
