@@ -107,7 +107,7 @@ para resolver de forma rapida e conseguir testar a aplicação altere as portas 
 
 - Rodando testes
 
-Par rodar os testes é nececário acessar o container docker onde o php está sendo interpretado utilizando o seguinte comando: 'docker exec -ti app bash'. Em seguinda execute o comando 'vendor/bin/phpunit tests/' para rodar os testes.
+Par rodar os testes é necessário acessar o container docker onde o php está sendo interpretado utilizando o seguinte comando: 'docker exec -ti app bash'. Em seguinda execute o comando 'vendor/bin/phpunit tests/' para rodar os testes.
 
 # Rotas API:
 
