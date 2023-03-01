@@ -91,7 +91,7 @@ Acesse:  https://github.com/MatheusHonorato/teste_pleno
 
 Clique em: CODE > Download ZIP
 
-- Rodando
+- Rodando a api
 
 Após efetuar o download do projeto é necessário executar os seguintes passos:
 
@@ -104,6 +104,10 @@ Após efetuar o download do projeto é necessário executar os seguintes passos:
 - Se ocorrer algum erro rode 'docker-compose ps' e verifique a coluna 'State' de cada container, se alguma não estiver como 'Up' provavelmente alguma porta já está sendo utilizada no sistema,
 para resolver de forma rapida e conseguir testar a aplicação altere as portas utilizadas pelos containers no arquivo docker-compose.yml, rode 'docker-compose down' e inicie o processo novamente;
 - A API pode ser testada de maneira isolada em softwares como o insomnia ou postman.
+
+- Rodando testes
+
+Par rodar os testes é nececário acessar o container docker onde o php está sendo interpretado utilizando o seguinte comando: 'docker exec -ti app bash'. Em seguinda execute o comando 'vendor/bin/phpunit tests/' para rodar os testes.
 
 # Rotas API:
 
